@@ -1,0 +1,59 @@
+﻿CREATE DATABASE DRINKS;
+GO
+
+USE DRINKS;
+GO
+
+CREATE TABLE Bebida(
+	idBebida smallint not null,
+	nome varchar(20) not null,
+	modoPreparo varchar(100) not null,
+	tempoPreparo varchar(5) not null,
+	quantidade smallint not null,
+	idMedida smallint not null,
+	temperatura varchar(5) not null,
+	CONSTRAINT pkBebida PRIMARY KEY (idBebida),
+	CONSTRAINT fkMedida FOREIGN KEY (idMedida) REFERENCES Medida(idMedida)
+);
+
+CREATE TABLE Medida(
+	idMedida smallint not null,
+	nome varchar(20) not null,
+	descricao varchar(50) not null,
+	CONSTRAINT pkMedida PRIMARY KEY (idMedida),
+	
+);
+
+CREATE TABLE Venda(
+	idBebida smallint not null,
+	data date not null,
+	quantidade smallint not null,
+	CONSTRAINT pkVenda PRIMARY KEY (idBebida, data),
+	CONSTRAINT fkBebida FOREIGN KEY (idBebida) REFERENCES Bebida(idBebida)
+);
+
+CREATE TABLE Ingrediente(
+	idIngrediente smallint not null,
+	nome varchar(30) not null,
+	idTipoIngrediente smallint not null,
+	CONSTRAINT pkIngred PRIMARY KEY (idIngrediente),
+	CONSTRAINT fkTipoIngred FOREIGN KEY (idTipoIngrediente) REFERENCES TipoIngrediente(idTipoIngrediente)
+);
+
+CREATE TABLE TipoIngrediente(
+	idTipoIngrediente smallint not null,
+	descricao varchar(50) not null,
+	CONSTRAINT pkTipoIngred PRIMARY KEY (idTipoIngrediente)
+);
+GO
+
+CREATE TABLE BebidaIngrediente(
+	idBebida smallint not null,
+	idIngrediente smallint not null,
+	idMedida smallint not null,
+	quantidade smallint nt null,
+	CONSTRAINT pkBebidaIngred PRIMARY KEY (idBebida, idIngrediente),
+	CONSTRAINT fkIngred FOREIGN KEY (idIngrediente) REFERENCES Ingrediente(idIngrediente),
+	CONSTRAINT fkBebIngred FOREIGN KEY (idBebida) REFERENCES Bebida(idBebida),
+	CONSTRAINT fkMedidaBeb FOREIGN KEY (idMedida) REFERENCES Medida(idMedida)
+);
